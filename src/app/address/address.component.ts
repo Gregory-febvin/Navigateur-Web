@@ -33,6 +33,10 @@ export class AddressComponent {
   };
 
   goToPage(url: string) {
+    // Si pas de https ou http alors ajoute http
+    if (!/^https?:\/\//i.test(url)) {
+      url = 'http://' + url;
+    }
     this.browserService.goToPage(url);
   }
 }

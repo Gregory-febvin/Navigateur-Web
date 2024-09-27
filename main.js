@@ -8,7 +8,10 @@ app.whenReady().then(() => {
     width: 800,
     height: 800,
     webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
+      preload: path.join(__dirname, 'preload.js'),
+      disableHtmlFullscreenWindowResize: true,
+      disableHardwareAcceleration: true,
+      spellcheck: false,
     }
   });
 
@@ -72,7 +75,7 @@ app.whenReady().then(() => {
   //Register events handling from the main windows
   win.once('ready-to-show', () => {
     fitViewToWin();
-    view.webContents.loadURL('https://amiens.unilasalle.fr');
+    return view.webContents.loadURL('https://amiens.unilasalle.fr');
   });
 
   win.on('resized', () => {
