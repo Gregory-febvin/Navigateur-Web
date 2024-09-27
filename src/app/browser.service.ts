@@ -12,6 +12,10 @@ export class BrowserService {
     // @ts-ignore
     electronAPI = window.electronAPI;
 
+    captureScreen(rect?: { x: number, y: number, width: number, height: number }) {
+        this.electronAPI.captureScreen(rect);
+    }
+
     toogleDevTool() {
         this.electronAPI.toogleDevTool();
     }

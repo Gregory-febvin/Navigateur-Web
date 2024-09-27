@@ -5,6 +5,7 @@ import { BackwardComponent } from './backward/backward.component';
 import { DebugComponent } from './debug/debug.component';
 import { ForwardComponent } from './forward/forward.component';
 import { RefreshComponent } from './refresh/refresh.component';
+import { CaptureComponent } from './capture/capture.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
 import { HomeComponent } from './home/home.component';
@@ -12,7 +13,7 @@ import { HomeComponent } from './home/home.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MatToolbarModule, AddressComponent, BackwardComponent, DebugComponent, ForwardComponent, RefreshComponent, HomeComponent],  // Ajout de HomeComponent
+  imports: [RouterOutlet, MatToolbarModule, AddressComponent, BackwardComponent, DebugComponent, ForwardComponent, RefreshComponent, HomeComponent, CaptureComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

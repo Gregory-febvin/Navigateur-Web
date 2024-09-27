@@ -1,6 +1,7 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer')
 
 contextBridge.exposeInMainWorld('electronAPI', {
+  captureScreen: (rect) => ipcRenderer.send('capture-screen', rect),
   toogleDevTool: () => ipcRenderer.send('toogle-dev-tool'),
   goBack: () => ipcRenderer.send('go-back'),
   goForward: () => ipcRenderer.send('go-forward'),

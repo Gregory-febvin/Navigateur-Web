@@ -1,4 +1,6 @@
 const { app, WebContentsView, BrowserWindow, ipcMain } = require('electron');
+const fs = require('fs');
+const os = require('os');
 const path = require('node:path');
 
 app.whenReady().then(() => {
@@ -32,6 +34,26 @@ app.whenReady().then(() => {
     const winSize = win.webContents.getOwnerBrowserWindow().getBounds();
     view.setBounds({ x: 0, y: 64, width: winSize.width, height: winSize.height - 64 });
   }
+
+  ipcMain.on('capture-screen', (event, rect) => {
+    // Définir les options supplémentaires si nécessaire
+    const opts = { format: 'png', quality: 100 };
+
+    view.webContents.capturePage(rect, opts).then((image) => {
+      const downloadsPath = path.join(os.homedir(), 'Downloads');
+      const imagePath = path.join(downloadsPath, 'screenshot.png');
+      fs.writeFile(imagePath, image.toPNG(), (err) => {
+        if (err) {
+          console.error('Erreur lors de la sauvegarde de l\'image:', err);
+          return;
+        }
+        win.webContents.send('captured-screen', `Image sauvegardée à: ${imagePath}`);
+        console.log('Capture de la page réussie', imagePath);
+      });
+    }).catch(err => {
+      console.error('Erreur lors de la capture de la page:', err);
+    });
+  });
 
   // Register events handling from the toolbar
   ipcMain.on('toogle-dev-tool', () => {
