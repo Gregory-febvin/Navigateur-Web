@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 export class BrowserService {
 
     url = '';
+    title = '';
     canGoBack = false;
     canGoForward = false;
 
@@ -39,11 +40,17 @@ export class BrowserService {
             .then(() => this.updateHistory());
     }
 
+    currentUrl(): Promise<{ url: string, title: string }> {
+        return this.electronAPI.currentUrl();
+    }
+
     setToCurrentUrl() {
-        this.electronAPI.currentUrl()
-            .then((url: string) => {
-                this.url = url;
+        this.currentUrl()
+            .then((data: { url: string, title: string }) => {
+                this.url = data.url;
+                this.title = data.title;
             });
+        this.currentUrl().then(data => { console.log('currentUrl', data); });
     }
 
     updateHistory() {

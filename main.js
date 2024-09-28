@@ -32,11 +32,10 @@ app.whenReady().then(() => {
   // Always fit the web rendering with the electron windows
   function fitViewToWin() {
     const winSize = win.webContents.getOwnerBrowserWindow().getBounds();
-    view.setBounds({ x: 0, y: 64, width: winSize.width, height: winSize.height - 64 });
+    view.setBounds({ x: 0, y: 128, width: winSize.width, height: winSize.height - 128 });
   }
 
   ipcMain.on('capture-screen', (event, rect) => {
-    // Définir les options supplémentaires si nécessaire
     const opts = { format: 'png', quality: 100 };
 
     view.webContents.capturePage(rect, opts).then((image) => {
@@ -88,12 +87,13 @@ app.whenReady().then(() => {
     return view.webContents.loadURL(url);
   });
 
-
   ipcMain.handle('current-url', () => {
-    return view.webContents.getURL();
+    return {
+      url: view.webContents.getURL(),
+      title: view.webContents.getTitle()
+    };
   });
 
-  //Register events handling from the main windows
   win.once('ready-to-show', () => {
     fitViewToWin();
     return view.webContents.loadURL('https://www.google.com');

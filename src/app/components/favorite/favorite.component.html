@@ -1,0 +1,12 @@
+<div class="favoris-bar">
+    <ul class="favorite-list">
+        <li *ngFor="let favori of favoris" (click)="goToPage(favori.url)">
+            <button>{{ favori.name }}</button>
+        </li>
+    </ul>
+    <button mat-icon-button (click)="toggleFavorite()">
+        <mat-icon aria-hidden="false" aria-label="Add to favorite">
+            {{ isFavorite() ? 'star' : 'star_border' }}
+        </mat-icon>
+    </button>
+</div>
