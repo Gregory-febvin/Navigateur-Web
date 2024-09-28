@@ -28,6 +28,11 @@ export class FavoriteComponent implements OnInit {
 
     console.log('favoris', this.favoris);
     this.updateCurrentSite();
+
+    this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
+      this.updateCurrentSite();
+    });
+
   }
 
   updateCurrentSite() {

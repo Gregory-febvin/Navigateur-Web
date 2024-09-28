@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +12,8 @@ export class BrowserService {
 
     // @ts-ignore
     electronAPI = window.electronAPI;
+
+    public onPageChange: EventEmitter<{ url: string, title: string }> = new EventEmitter();
 
     captureScreen(rect?: { x: number, y: number, width: number, height: number }) {
         this.electronAPI.captureScreen(rect);
@@ -37,7 +39,10 @@ export class BrowserService {
 
     goToPage(url: string) {
         this.electronAPI.goToPage(url)
-            .then(() => this.updateHistory());
+            .then(() => {
+                this.updateHistory();
+                this.emitPageChange();
+            });
     }
 
     currentUrl(): Promise<{ url: string, title: string }> {
@@ -49,6 +54,7 @@ export class BrowserService {
             .then((data: { url: string, title: string }) => {
                 this.url = data.url;
                 this.title = data.title;
+                this.emitPageChange();
             });
         this.currentUrl().then(data => { console.log('currentUrl', data); });
     }
@@ -61,5 +67,9 @@ export class BrowserService {
 
         this.electronAPI.canGoForward()
             .then((canGoForward: boolean) => this.canGoForward = canGoForward);
+    }
+
+    emitPageChange() {
+        this.onPageChange.emit({ url: this.url, title: this.title });
     }
 }
