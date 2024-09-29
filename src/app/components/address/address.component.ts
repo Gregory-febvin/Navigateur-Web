@@ -1,8 +1,8 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { BrowserService } from '../../browser.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import {MatInputModule} from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
@@ -12,10 +12,28 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './address.component.html',
   styleUrl: './address.component.css'
 })
-export class AddressComponent {
+export class AddressComponent implements OnInit {
   @ViewChild('search') searchElement: ElementRef = new ElementRef({});
 
   public browserService = inject(BrowserService);
+  public currentSite: { name: string, url: string } = { name: '', url: '' };
+
+  ngOnInit() {
+    this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
+      this.updateCurrentSite();
+    });
+  }
+
+  updateCurrentSite() {
+    this.browserService.currentUrl().then(data => {
+      this.currentSite = {
+        name: data.title,
+        url: data.url
+      };
+    }).catch(err => {
+      console.error(err);
+    });
+  }
 
   onKeyDownEvent(e: any) {
     if (e.key === 'Escape') {

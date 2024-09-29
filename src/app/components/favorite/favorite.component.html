@@ -4,7 +4,6 @@
             <button>{{ favori.name }}</button>
         </li>
     </ul>
-    {{ currentSite.name }}
     <button mat-icon-button (click)="toggleFavorite()">
         <mat-icon aria-hidden="false" aria-label="Add to favorite">
             {{ isFavorite() ? 'star' : 'star_border' }}

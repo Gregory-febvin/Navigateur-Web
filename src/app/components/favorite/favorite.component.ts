@@ -26,7 +26,6 @@ export class FavoriteComponent implements OnInit {
       this.favoris = JSON.parse(savedFavoris);
     }
 
-    console.log('favoris', this.favoris);
     this.updateCurrentSite();
 
     this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
@@ -41,7 +40,6 @@ export class FavoriteComponent implements OnInit {
         name: data.title,
         url: data.url
       };
-      console.log('updateCurrentSite', this.currentSite);
     }).catch(err => {
       console.error(err);
     });
