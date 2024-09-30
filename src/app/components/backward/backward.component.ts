@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { BrowserService } from '../../browser.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,8 +10,27 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './backward.component.html',
   styleUrl: './backward.component.css'
 })
-export class BackwardComponent {
+export class BackwardComponent implements OnInit {
 
   public browserService = inject(BrowserService);
+  public currentSite: { name: string, url: string } = { name: '', url: '' };
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit() {
+    this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
+      this.updateCurrentSite(data);
+    });
+  }
+
+  updateCurrentSite(data: { url: string, title: string }) {
+    this.currentSite.name = data.title;
+    this.currentSite.url = data.url;
+    this.cdr.detectChanges();
+  }
+
+  goBack() {
+    this.browserService.goBack();
+  }
 
 }
