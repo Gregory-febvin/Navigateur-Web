@@ -35,7 +35,7 @@ app.whenReady().then(() => {
     }
 
     view.webContents.on('did-navigate', (event, url) => {
-        view.webContents.send('update-url', url);
+        mainWindow.webContents.send('update-url', url, view.webContents.getTitle());
         console.log('did-navigate', url);
     });
 

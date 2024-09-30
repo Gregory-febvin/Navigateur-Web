@@ -16,17 +16,22 @@ export class BrowserService {
     electronAPI = window.electronAPI;
 
     constructor() {
-        if (this.electronAPI) {
-            console.log('browser.service.ts: electronAPI détecté');
-            this.electronAPI.onUpdateUrl((data: { url: string, title: string }) => {
-                console.log('browser.service.ts: URL reçue', data.url, data.title);
-                this.emitPageChange();
-            });
-        } else {
-            console.error('browser.service.ts: electronAPI non disponible');
+        if (!this.electronAPI){
+            this.electronAPI = {
+                onUpdateUrl : ()=>{},
+                currentUrl : async ()=>{return ""}
+            }
         }
+
+        const updateUrl = (event: any, url: any, title: any) => {
+            this.url = url;
+            this.title = title;
+            this.setToCurrentUrl();
+            this.emitPageChange();
+        };
+
+        this.electronAPI.onUpdateUrl(updateUrl);
     }
-    
 
     captureScreen(rect?: { x: number, y: number, width: number, height: number }) {
         this.electronAPI.captureScreen(rect);
@@ -55,20 +60,13 @@ export class BrowserService {
     goToPage(url: string) {
         this.electronAPI.goToPage(url).then(() => {
             this.updateHistory();
-            this.setToCurrentUrl();
+            this.setToCurrentUrl(url);
         }).catch((err: any) => console.error(err));
     }
 
-    currentUrl(): Promise<{ url: string, title: string }> {
-        return this.electronAPI.currentUrl();
-    }
-
-    setToCurrentUrl() {
-        this.currentUrl().then((data: { url: string, title: string }) => {
-            this.url = data.url;
-            this.title = data.title;
-            this.emitPageChange();
-        }).catch(err => console.error(err));
+    setToCurrentUrl(url?: string, title?: string) {
+        this.url = url || this.url;
+        this.title = title || this.title;
     }
 
     updateHistory() {
@@ -105,7 +103,6 @@ export class BrowserService {
     }
 
     emitPageChange() {
-        console.log('emitPageChange', this.url, this.title);
         this.onPageChange.emit({ url: this.url, title: this.title });
     }
 }

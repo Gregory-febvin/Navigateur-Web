@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserService } from '../../browser.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,8 @@ export class FavoriteComponent implements OnInit {
   public favoris: { name: string, url: string }[] = [];
   public currentSite: { name: string, url: string } = { name: '', url: '' };
 
+  constructor(private cdr: ChangeDetectorRef) {}
+  
   goToPage(url: string) {
     this.browserService.goToPage(url);
   }
@@ -26,27 +28,16 @@ export class FavoriteComponent implements OnInit {
       this.favoris = JSON.parse(savedFavoris);
     }
 
-    this.updateCurrentSite();
-
     this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
-      this.updateCurrentSite();
+      this.updateCurrentSite(data);
     });
 
   }
 
-  updateCurrentSite() {
-    this.browserService.currentUrl().then(data => {
-      this.currentSite = {
-        name: data.title,
-        url: data.url
-      };
-    }).catch(err => {
-      console.error(err);
-    });
-  }
-
-  async getCurrentSite() {
-    return await this.browserService.currentUrl();
+  updateCurrentSite(data: { url: string, title: string }) {
+    this.currentSite.name = data.title;
+    this.currentSite.url = data.url;
+    this.cdr.detectChanges();
   }
 
   isFavorite(): boolean {

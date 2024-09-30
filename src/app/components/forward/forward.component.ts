@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserService } from '../../browser.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,20 +16,17 @@ export class ForwardComponent implements OnInit {
   public currentSite: { name: string, url: string } = { name: '', url: '' };
   electronService: any;
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
   ngOnInit() {
     this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
-      this.updateCurrentSite();
+      this.updateCurrentSite(data);
     });
   }
 
-  updateCurrentSite() {
-    this.browserService.currentUrl().then(data => {
-      this.currentSite = {
-        name: data.title,
-        url: data.url
-      };
-    }).catch(err => {
-      console.error(err);
-    });
+  updateCurrentSite(data: { url: string, title: string }) {
+    this.currentSite.name = data.title;
+    this.currentSite.url = data.url;
+    this.cdr.detectChanges();
   }
 }

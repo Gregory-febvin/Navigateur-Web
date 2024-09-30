@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { BrowserService } from '../../browser.service';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -18,21 +18,19 @@ export class AddressComponent implements OnInit {
   public browserService = inject(BrowserService);
   public currentSite: { name: string, url: string } = { name: '', url: '' };
 
+  constructor(private cdr: ChangeDetectorRef) {}
+  
   ngOnInit() {
     this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
-      this.updateCurrentSite();
+      console.log('onPageChange', data);
+      this.updateCurrentSite(data);
     });
   }
 
-  updateCurrentSite() {
-    this.browserService.currentUrl().then(data => {
-      this.currentSite = {
-        name: data.title,
-        url: data.url
-      };
-    }).catch(err => {
-      console.error(err);
-    });
+  updateCurrentSite(data: { url: string, title: string }) {
+    this.currentSite.name = data.title;
+    this.currentSite.url = data.url;
+    this.cdr.detectChanges();
   }
 
   onKeyDownEvent(e: any) {

@@ -10,10 +10,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     goForward: () => ipcRenderer.invoke('go-forward'),
 
     onUpdateUrl: (callback) => {
-        ipcRenderer.on('update-url', (event, url, title) => {
-            console.log('preload.js: update-url reçu avec', url, title);
-            callback({ url, title });
-        });
+        ipcRenderer.on('update-url', callback);
     },
 
     refresh: () => ipcRenderer.invoke('refresh'),
