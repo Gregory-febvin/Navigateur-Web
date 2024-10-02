@@ -22,7 +22,6 @@ export class AddressComponent implements OnInit {
   
   ngOnInit() {
     this.browserService.onPageChange.subscribe((data: { url: string, title: string }) => {
-      console.log('onPageChange', data);
       this.updateCurrentSite(data);
     });
   }

@@ -41,6 +41,10 @@ export class BrowserService {
         this.electronAPI.toogleDevTool();
     }
 
+    loadBlockList(isBlock: boolean) {
+        this.electronAPI.loadBlockList(isBlock);
+    }
+
     goBack() {
         this.electronAPI.goBack();
         this.updateHistory();

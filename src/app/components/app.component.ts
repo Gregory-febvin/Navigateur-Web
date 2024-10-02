@@ -10,6 +10,7 @@ import { RefreshComponent } from './refresh/refresh.component';
 import { CaptureComponent } from './capture/capture.component';
 import { HomeComponent } from './home/home.component';
 import { FavoriteComponent } from './favorite/favorite.component';
+import { AdBlockComponent } from './ad-block/ad-block.component';
 
 @Component({
   selector: 'app-root',
@@ -25,6 +26,7 @@ import { FavoriteComponent } from './favorite/favorite.component';
     HomeComponent, 
     CaptureComponent, 
     FavoriteComponent,
+    AdBlockComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

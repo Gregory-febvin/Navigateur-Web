@@ -5,6 +5,7 @@ const https = require('https');
 const path = require('node:path');
 
 let blockList = [];
+let isBlockEnabled = true;
 
 app.whenReady().then(() => {
 
@@ -21,9 +22,10 @@ app.whenReady().then(() => {
         }
     });
 
-    loadBlockList();
-
-    setupAdBlocker(session.defaultSession);
+    loadBlockList(isBlockEnabled).then(() => {
+        view.webContents.reload();
+    });
+    setupAdBlocker(isBlockEnabled, session.defaultSession);
 
     if (app.isPackaged) {
         mainWindow.loadFile('dist/browser-template/browser/index.html');
@@ -162,12 +164,16 @@ app.whenReady().then(() => {
     });
 
     /**
-     * Événement déclenché lorsque le navigateur doit bloquer une URL.
-     * @param {string} url URL à bloquer.
-     * @returns {boolean} `true` si l'URL doit être bloquée, sinon `false`.
+     * Événement déclenché lorsque le navigateur doit charger la liste de blocage des publicités.
+     * @param {boolean} isBlock `true` pour bloquer les publicités, sinon `false`.
+     * @returns {void}
      */
-    ipcMain.handle('should-block-url', (event, url) => {
-        return adBlockService.shouldBlockUrl(url);
+    ipcMain.on('load-block-list', (event, isBlock) => {
+        isBlockEnabled = !isBlock;
+        loadBlockList(isBlockEnabled).then(() => {
+            view.webContents.reload();
+        });
+        setupAdBlocker(isBlockEnabled, session.defaultSession);
     });
 
     /**
@@ -250,18 +256,19 @@ function cleanFilter(filter) {
  * @returns {Promise<void>} Résultat de la promesse.
  * @throws {Error} En cas d'erreur lors du chargement.
  */
-async function loadBlockList() {
-    try {
-        const url = 'https://easylist.to/easylist/easylist.txt';
-        const data = await downloadBlockList(url);
-        blockList = parseBlockList(data);
-        console.log('Checking URL:', blockList);
-        console.log(`Block list loaded : ${blockList.length} rules.`);
+async function loadBlockList(isBlock) {
+    if (isBlock) {
+        try {
+            const url = 'https://easylist.to/easylist/easylist.txt';
+            const data = await downloadBlockList(url);
+            blockList = parseBlockList(data);
+            console.log(`Block list loaded : ${blockList.length} rules.`);
 
-        const filePath = path.join(__dirname, 'blockList.txt');
-        saveBlockListToFile(blockList, filePath);
-    } catch (error) {
-        console.error('Error downloading block list :', error);
+            const filePath = path.join(__dirname, 'blockList.txt');
+            saveBlockListToFile(blockList, filePath);
+        } catch (error) {
+            console.error('Error downloading block list :', error);
+        }
     }
 }
 
@@ -298,12 +305,12 @@ function shouldBlockUrl(url) {
  * @returns {void}
  * @throws {Error} En cas d'erreur lors de la configuration.
  */
-function setupAdBlocker(session) {
+function setupAdBlocker(isBlock, session) {
     session.webRequest.onBeforeRequest((details, callback) => {
         const { url, resourceType } = details;
 
         try {
-            if (shouldBlockUrl(url)) {
+            if (isBlock && shouldBlockUrl(url)) {
                 console.log(`Blocked : ${url}`);
                 callback({ cancel: true });
             } else {

@@ -1,7 +1,5 @@
 const { contextBridge, ipcRenderer } = require('electron/renderer');
 
-console.log('preload.js: Preload chargé avec succès.');
-
 contextBridge.exposeInMainWorld('electronAPI', {
     captureScreen: (rect) => ipcRenderer.send('capture-screen', rect),
     toogleDevTool: () => ipcRenderer.send('toogle-dev-tool'),
@@ -19,5 +17,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     goToPage: (url) => ipcRenderer.invoke('go-to-page', url),
     currentUrl: () => ipcRenderer.invoke('current-url'),
 
-    shouldBlockUrl: (url) => ipcRenderer.invoke('should-block-url', url)
+    loadBlockList: (isBlock) => ipcRenderer.send('load-block-list', isBlock),
 });
