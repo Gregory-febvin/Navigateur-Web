@@ -24,11 +24,11 @@ import { FavoriteComponent } from './favorite/favorite.component';
     RefreshComponent, 
     HomeComponent, 
     CaptureComponent, 
-    FavoriteComponent
+    FavoriteComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'browser-template';
+  title = 'Que Tchi';
 }

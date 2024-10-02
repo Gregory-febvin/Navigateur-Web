@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { BrowserService } from '../../browser.service';
+import { BrowserService } from '../../services/browser.service';
 import { MatIconModule } from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 

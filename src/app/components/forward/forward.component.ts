@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { BrowserService } from '../../browser.service';
+import { BrowserService } from '../../services/browser.service';
 import { MatButtonModule } from '@angular/material/button';
 
 @Component({
