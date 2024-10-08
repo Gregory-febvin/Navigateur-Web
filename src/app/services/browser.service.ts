@@ -23,6 +23,13 @@ export class BrowserService {
             }
         }
 
+        /**
+         * Ecoute l'événement onUpdateUrl pour mettre à jour l'url courante
+         * @param event 
+         * @param url 
+         * @param title 
+         * @returns {void}
+         */
         const updateUrl = (event: any, url: any, title: any) => {
             this.url = url;
             this.title = title;
@@ -33,34 +40,65 @@ export class BrowserService {
         this.electronAPI.onUpdateUrl(updateUrl);
     }
 
+    /**
+     * Envoie un message à l'API Electron pour faire une capture d'écran
+     * @param {object} rect
+     * @returns {void}
+     */
     captureScreen(rect?: { x: number, y: number, width: number, height: number }) {
         this.electronAPI.captureScreen(rect);
     }
 
+    /**
+     * Envoie un message à l'API Electron pour ouvrir la console de développement
+     * @returns {void}
+     */
     toogleDevTool() {
         this.electronAPI.toogleDevTool();
     }
 
+    /**
+     * Envoie un message à l'API Electron pour charger la liste des sites bloqués ou autorisés
+     * @param {boolean} isBlock 
+     * @returns {void}
+     */
     loadBlockList(isBlock: boolean) {
         this.electronAPI.loadBlockList(isBlock);
     }
 
+    /**
+     * Envoie un message à l'API Electron pour retourner à la page précédente et met à jour l'historique
+     * @returns {void}
+     */
     goBack() {
         this.electronAPI.goBack();
         this.updateHistory();
     }
 
+    /**
+     * Envoie un message à l'API Electron pour avancer à la page suivante et met à jour l'historique
+     * @returns {void}
+     */
     goForward() {
         this.electronAPI.goForward();
         this.updateHistory();
     }
 
+    /**
+     * Envoie un message à l'API Electron pour rafraîchir la page courante 
+     * @returns {void}
+     */
     refresh() {
         this.electronAPI.refresh().then(() => {
             this.setToCurrentUrl();
         }).catch((err: any) => console.error(err));
     }
 
+    /**
+     * Envoie un message à l'API Electron pour charger une nouvelle page et met à jour l'historique
+     * @param {string} url 
+     * @returns {void}
+     */
     goToPage(url: string) {
         this.electronAPI.goToPage(url).then(() => {
             this.updateHistory();
@@ -68,11 +106,21 @@ export class BrowserService {
         }).catch((err: any) => console.error(err));
     }
 
+    /**
+     * Modifier l'url et le titre courant
+     * @param {string} url
+     * @param {string} title
+     * @returns {void}
+     */
     setToCurrentUrl(url?: string, title?: string) {
         this.url = url || this.url;
         this.title = title || this.title;
     }
 
+    /**
+     * Met à jour l'historique de navigation et vérifie si on peut aller en arrière ou en avant
+     * @returns {void}
+     */
     updateHistory() {
         this.electronAPI.canGoBack().then((canGoBack: boolean) => {
             this.canGoBack = canGoBack;
@@ -83,29 +131,10 @@ export class BrowserService {
         }).catch((err: any) => console.error(err));
     }
 
-    setProxy(proxyRules: string) {
-        this.electronAPI.setProxy({ proxyRules }).then(() => {
-            console.log(`Proxy set to: ${proxyRules}`);
-        }).catch((err: any) => console.error(err));
-    }
-
-    enableIncognitoMode() {
-        localStorage.clear();
-        sessionStorage.clear();
-        this.clearCookies();
-      }
-
-    private clearCookies() {
-        const cookies = document.cookie.split(";");
-
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i];
-            const eqPos = cookie.indexOf("=");
-            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-        }
-    }
-
+    /**
+     * Émet un événement onPageChange
+     * @returns {void}
+     */
     emitPageChange() {
         this.onPageChange.emit({ url: this.url, title: this.title });
     }

@@ -240,7 +240,7 @@ function parseBlockList(data) {
  */
 function cleanFilter(filter) {
     let cleanedFilter = filter.replace(/^\|\|/, '');
-    const prefixesToRemove = ['-', '/', '_', '=', '###', '##.'];
+    const prefixesToRemove = ['-', '/', '_', '=', '###', '##'];
     prefixesToRemove.forEach(prefix => {
         if (cleanedFilter.startsWith(prefix)) {
             cleanedFilter = cleanedFilter.replace(prefix, '');
