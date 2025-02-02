@@ -9,12 +9,15 @@ Ce projet a pour objectif d'améliorer un navigateur web personnalisé basé sur
 ## Fonctionnalités
 - **Création d'un composant "Home"** : Ajout d'un bouton permettant de retourner à la page d'accueil.
 - **Personnalisation du navigateur** : Intégration de nouvelles fonctionnalités comme une barre de favoris et un bloqueur de publicités.
-- **Blocage des publicités** : Implémentation d'un système basé sur la liste EasyList pour filtrer les annonces intrusives.
 - **Capture d'écran** : Ajout d'une fonctionnalité pour capturer la page en cours.
 - **Correction automatique des URLs** : Ajout du protocole manquant (http://) pour éviter les erreurs de chargement.
+- **Blocage des publicités** : Implémentation d'un système basé sur la liste EasyList pour filtrer les annonces intrusives.
 <div align="center">
   <img src="https://github.com/user-attachments/assets/3c19a2c9-7200-4e23-8c4b-6c30d050ee39" height="200px">
   <img src="https://github.com/user-attachments/assets/407e7b9d-b71d-4480-a7a0-f3890798a36b" height="200px">
+</div>
+<div align="center">
+  <strong>Blocage des publicités</strong>
 </div>
 
 ## Prérequis
