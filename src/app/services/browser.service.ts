@@ -35,6 +35,7 @@ export class BrowserService {
             this.title = title;
             this.setToCurrentUrl();
             this.emitPageChange();
+            this.updateHistory();
         };
 
         this.electronAPI.onUpdateUrl(updateUrl);

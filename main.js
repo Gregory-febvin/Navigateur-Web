@@ -53,8 +53,8 @@ app.whenReady().then(() => {
      * @param {string} url URL de la page.
      * @returns {void}
      */
-    view.webContents.on('did-navigate', (event, url) => {
-        mainWindow.webContents.send('update-url', url, view.webContents.getTitle());
+    view.webContents.on('did-navigate', () => {
+        mainWindow.webContents.send('update-url', view.webContents.getURL(), view.webContents.getTitle());
     });
 
     /**
@@ -63,8 +63,8 @@ app.whenReady().then(() => {
      * @param {string} url URL de la page.
      * @returns {void}
      */
-    view.webContents.on('did-navigate-in-page', (event, url) => {
-        view.webContents.send('update-url', url);
+    view.webContents.on('did-navigate-in-page', () => {
+        mainWindow.webContents.send('update-url', view.webContents.getURL(), view.webContents.getTitle());
     });
 
     /**
@@ -77,7 +77,7 @@ app.whenReady().then(() => {
         const opts = { format: 'png', quality: 100 };
 
         view.webContents.capturePage(rect, opts).then((image) => {
-            const downloadsPath = path.join(os.homedir(), 'Downloads');
+            const downloadsPath = path.join(os.homedir(), 'Téléchargements');
             const imagePath = path.join(downloadsPath, 'screenshot.png');
             fs.writeFile(imagePath, image.toPNG(), (err) => {
                 if (err) {
@@ -97,10 +97,10 @@ app.whenReady().then(() => {
      * @returns {void}
      */
     ipcMain.on('toogle-dev-tool', () => {
-        if (mainWindow.webContents.isDevToolsOpened()) {
-            mainWindow.webContents.closeDevTools();
+        if (view.webContents.isDevToolsOpened()) {
+            view.webContents.closeDevTools();
         } else {
-            mainWindow.webContents.openDevTools({ mode: 'detach' });
+            view.webContents.openDevTools({ mode: 'detach' });
         }
     });
 
