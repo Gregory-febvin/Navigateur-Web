@@ -10,8 +10,8 @@ let isBlockEnabled = true;
 app.whenReady().then(() => {
 
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 800,
+        width: 1440,
+        height: 900,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
