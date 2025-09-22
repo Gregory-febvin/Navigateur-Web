@@ -1,4 +1,4 @@
-const { app, WebContentsView, BrowserWindow, ipcMain, session  } = require('electron');
+const { app, WebContentsView, BrowserWindow, ipcMain, session, screen  } = require('electron');
 const fs = require('fs');
 const os = require('os');
 const https = require('https');
@@ -9,9 +9,11 @@ let isBlockEnabled = true;
 
 app.whenReady().then(() => {
 
+    const { width, height } = screen.getPrimaryDisplay().workAreaSize;
+
     const mainWindow = new BrowserWindow({
-        width: 1440,
-        height: 900,
+        width: width,
+        height: height,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
