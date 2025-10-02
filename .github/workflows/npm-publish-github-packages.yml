@@ -32,16 +32,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm run build:linux
 
-      - name: Zip linux-unpacked folder
+      - name: Zip releases folder
         run: |
-          cd releases
-          zip -r linux-unpacked.zip linux-unpacked
+          zip -r Linux-release-build.zip releases
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ github.run_number }}
           name: Release ${{ github.run_number }}
-          files: releases/linux-unpacked.zip
+          files: Linux-release-build.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
