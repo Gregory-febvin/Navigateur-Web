@@ -59,11 +59,6 @@
       "main.js",
       "preload.js",
       "dist/**/*"
-    ],
-    "linux": {
-      "target": [
-        "dir"
-      ]
-    }
+    ]
   }
 }
