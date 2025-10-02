@@ -14,7 +14,7 @@
     "start:electron": "wait-on tcp:4200 && electron . --serve",
     "build:mac": "ng build --base-href ./ && electron-builder -m --publish=never",
     "build:win": "ng build --base-href ./ && electron-builder -w --publish=never",
-    "build:linux": "ng build --base-href ./ && electron-builder --linux dir --publish=never",
+    "build:linux": "ng build --base-href ./ && electron-builder -l --publish=never"
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
