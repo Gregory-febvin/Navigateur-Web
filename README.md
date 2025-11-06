@@ -33,6 +33,8 @@ cd Navigateur-Web
 - Installer les dépendances
 ```bash
 npm install
+
+npm install puppeteer
 ```
 - Lancer l'application
 ```bash
