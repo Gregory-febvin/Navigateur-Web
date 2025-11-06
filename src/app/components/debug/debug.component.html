@@ -1,3 +1,36 @@
 <button mat-icon-button (click)="browserService.toogleDevTool()">
   <mat-icon aria-hidden="false" aria-label="Debug page" fontIcon="bug_report"></mat-icon>
 </button>
+
+<!-- Quick PDF button next to debug -->
+<button mat-icon-button (click)="onCreatePdf()" title="Export page to PDF">
+  <mat-icon aria-hidden="false" aria-label="Export PDF" fontIcon="picture_as_pdf"></mat-icon>
+</button>
+
+<!-- Export HTML button -->
+<button mat-icon-button (click)="onExportHtml()" title="Export page HTML">
+  <mat-icon aria-hidden="false" aria-label="Export HTML" fontIcon="save"></mat-icon>
+</button>
+
+<!-- Metadata extraction button -->
+<button mat-icon-button (click)="onExtractMetadata()" title="Extract page metadata">
+  <mat-icon aria-hidden="false" aria-label="Metadata" fontIcon="info"></mat-icon>
+</button>
+
+<!-- HAR capture start/stop -->
+<button mat-icon-button (click)="onStartHar()" title="Start HAR capture">
+  <mat-icon aria-hidden="false" aria-label="Start HAR" fontIcon="play_arrow"></mat-icon>
+</button>
+<button mat-icon-button (click)="onStopHar()" title="Stop HAR capture">
+  <mat-icon aria-hidden="false" aria-label="Stop HAR" fontIcon="stop"></mat-icon>
+</button>
+
+<!-- Open always-on-top HAR panel -->
+<button mat-icon-button (click)="openHarPanel()" title="Open HAR panel">
+  <mat-icon aria-hidden="false" aria-label="HAR files" fontIcon="folder_open"></mat-icon>
+</button>
+
+<!-- Automation panel -->
+<button mat-icon-button (click)="openAutomationPanel()" title="Open Automation panel">
+  <mat-icon aria-hidden="false" aria-label="Automation" fontIcon="build"></mat-icon>
+</button>
