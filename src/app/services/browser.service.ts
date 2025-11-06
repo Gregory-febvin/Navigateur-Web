@@ -19,7 +19,12 @@ export class BrowserService {
         if (!this.electronAPI){
             this.electronAPI = {
                 onUpdateUrl : ()=>{},
-                currentUrl : async ()=>{return ""}
+                currentUrl : async ()=>{return ""},
+                createPdf : async ()=>{return ''},
+                exportHtml: async ()=>{return ''},
+                extractMetadata: async ()=>{return {}},
+                startHar: async ()=>{return true},
+                stopHar: async ()=>{return ''}
             }
         }
 
@@ -56,6 +61,101 @@ export class BrowserService {
      */
     toogleDevTool() {
         this.electronAPI.toogleDevTool();
+    }
+
+    /**
+     * Ask main to create a PDF for the current page. Returns the path.
+     */
+    createPdf(options?: { path?: string, format?: string }) {
+        if (this.electronAPI.createPdf) {
+            return this.electronAPI.createPdf(options);
+        }
+        return Promise.reject(new Error('createPdf not available'));
+    }
+
+    /**
+     * Ask main to export current page HTML to a file. Returns the file path.
+     */
+    exportHtml(options?: { path?: string }) {
+        if (this.electronAPI.exportHtml) {
+            return this.electronAPI.exportHtml(options);
+        }
+        return Promise.reject(new Error('exportHtml not available'));
+    }
+
+    /**
+     * Ask main to extract page metadata via Puppeteer. Returns a metadata object.
+     */
+    extractMetadata(options?: any) {
+        if (this.electronAPI.extractMetadata) {
+            return this.electronAPI.extractMetadata(options);
+        }
+        return Promise.reject(new Error('extractMetadata not available'));
+    }
+
+    /**
+     * Start network HAR capture (returns true on success)
+     */
+    startHar() {
+        if (this.electronAPI.startHar) {
+            return this.electronAPI.startHar();
+        }
+        return Promise.reject(new Error('startHar not available'));
+    }
+
+    /**
+     * Stop network HAR capture and save to file. Returns the file path.
+     */
+    stopHar() {
+        if (this.electronAPI.stopHar) {
+            return this.electronAPI.stopHar();
+        }
+        return Promise.reject(new Error('stopHar not available'));
+    }
+
+    /**
+     * List saved HAR files in the home directory.
+     */
+    listHars() {
+        if (this.electronAPI.listHars) {
+            return this.electronAPI.listHars();
+        }
+        return Promise.resolve([]);
+    }
+
+    openHar(filePath: string) {
+        if (this.electronAPI.openHar) {
+            return this.electronAPI.openHar(filePath);
+        }
+        return Promise.reject(new Error('openHar not available'));
+    }
+
+    revealHar(filePath: string) {
+        if (this.electronAPI.revealHar) {
+            return this.electronAPI.revealHar(filePath);
+        }
+        return Promise.reject(new Error('revealHar not available'));
+    }
+
+    copyHarPath(filePath: string) {
+        if (this.electronAPI.copyHarPath) {
+            return this.electronAPI.copyHarPath(filePath);
+        }
+        return Promise.reject(new Error('copyHarPath not available'));
+    }
+
+    showHarPanel() {
+        if (this.electronAPI.showHarPanel) {
+            return this.electronAPI.showHarPanel();
+        }
+        return Promise.reject(new Error('showHarPanel not available'));
+    }
+
+    showAutomationPanel() {
+        if (this.electronAPI.showAutomationPanel) {
+            return this.electronAPI.showAutomationPanel();
+        }
+        return Promise.reject(new Error('showAutomationPanel not available'));
     }
 
     /**
